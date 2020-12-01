@@ -4,7 +4,10 @@ Created by Kai Westwell
 
 ### Tutorial Aims
 
-#### <a href="#section1"> 1. Understand the basics of multivariate analyses</a>
+#### <a href="#section1"> 1. Understand the basics of multivariate analyses
+- Multivariate Stats Overview
+- NMDS
+- SIMPER </a>
 
 #### <a href="#section2"> 2. The second section</a>
 
