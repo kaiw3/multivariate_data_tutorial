@@ -4,25 +4,25 @@ Created by Kai Westwell
 
 ### Tutorial Aims
 
-#### <a href="#section1"> 1. Understand the basics of multivariate analyses\n - Multivariate Stats Overview\n - NMDS/n - SIMPER </a>
+#### <a href="#section1"> 1. Understand the basics of multivariate analyses\n 
+<a href="#section1a"> - Multivariate Stats Overview</a>
+- NMDS
+- SIMPER</a>
 
-#### <a href="#section2"> 2. The second section</a>
+#### <a href="#section2"> 2. Make an NMDS plot</a>
 
-#### <a href="#section3"> 3. The third section</a>
+#### <a href="#section3"> 3. Perform a SIMPER analysis</a>
 
-You can read this text, then delete it and replace it with your text about your tutorial: what are the aims, what code do you need to achieve them?
+This tutorial will cover some of the basic methods in analysing multivariate data. You will learn what this is, some of the ways you can analyse data of this form, and then you can practice it for yourself!
 ---------------------------
 We are using `<a href="#section_number">text</a>` to create anchors within our text. For example, when you click on section one, the page will automatically go to where you have put `<a name="section_number"></a>`.
 
-To create subheadings, you can use `#`, e.g. `# Subheading 1` creates a subheading with a large font size. The more hashtags you add, the smaller the text becomes. If you want to make text bold, you can surround it with `__text__`, which creates __text__. For italics, use only one understore around the text, e.g. `_text_`, _text_.
+## Introduction
 
-# Subheading 1
-## Subheading 2
-### Subheading 3
 
 This is some introductory text for your tutorial. Explain the skills that will be learned and why they are important. Set the tutorial in context.
 
-You can get all of the resources for this tutorial from <a href="https://github.com/ourcodingclub/CC-EAB-tut-ideas" target="_blank">this GitHub repository</a>. Clone and download the repo as a zip file, then unzip it.
+You can get all of the resources for this tutorial from <a href="https://github.com/kaiw3/multivariate_data_tutorial" target="_blank">this GitHub repository</a>. Clone and download the repo as a zip file, then unzip it.
 
 <a name="section1"></a>
 
@@ -43,6 +43,8 @@ setwd("your_filepath")
 library(ggplot2)
 library(dplyr)
 ```
+
+<a name="section1a"></a>
 
 <a name="section2"></a>
 
