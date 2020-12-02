@@ -5,74 +5,92 @@ Created by Kai Westwell
 ### Tutorial Aims
 
 #### <a href="#section1"> 1. Understand the basics of multivariate analyses\n 
-- <a href="#section1a"> Multivariate Stats Overview</a>
-- NMDS
-- SIMPER</a>
+<a href="#section1a"> - Multivariate Stats Overview</a>
+<a href="#section1b"> - NMDS</a>
+<a href="#section1c"> - ANOSIM</a>
 
 #### <a href="#section2"> 2. Make an NMDS plot</a>
 
 #### <a href="#section3"> 3. Perform a SIMPER analysis</a>
 
-This tutorial will cover some of the basic methods in analysing multivariate data. You will learn what this is, some of the ways you can analyse data of this form, and then you can practice it for yourself!
+This tutorial will cover some of the basic methods in analysing multivariate data. You will learn what multivariate data is, some of the ways you can analyse these kinds of data, and then you can practice it for yourself!
 ---------------------------
-We are using `<a href="#section_number">text</a>` to create anchors within our text. For example, when you click on section one, the page will automatically go to where you have put `<a name="section_number"></a>`.
 
 ## Introduction
 
-
-This is some introductory text for your tutorial. Explain the skills that will be learned and why they are important. Set the tutorial in context.
+Ecological data can be complex. Often, large numbers of variables need to be studied in order to obtain an accurate picture of the system in question. This complexity can make the data hard to interpret, and even harder to analyse statistically. This tutorial will take you through the basics of understanding what multivariate data look like, and will introduce you to some of the ways we can use statistics to interpret these data. In order to transition into dealing with the wide array of ecological data you are likely to be presented with when looking at real systems, its important to be able to deal with complex data. And hopefully, as you take these skill forward, you will find more and more ways that to can apply multivariate stats into solving a problem!
 
 You can get all of the resources for this tutorial from <a href="https://github.com/kaiw3/multivariate_data_tutorial" target="_blank">this GitHub repository</a>. Clone and download the repo as a zip file, then unzip it.
 
 <a name="section1"></a>
 
-## 1. The first section
-
-
-At the beginning of your tutorial you can ask people to open `RStudio`, create a new script by clicking on `File/ New File/ R Script` set the working directory and load some packages, for example `ggplot2` and `dplyr`. You can surround package names, functions, actions ("File/ New...") and small chunks of code with backticks, which defines them as inline code blocks and makes them stand out among the text, e.g. `ggplot2`.
-
-When you have a larger chunk of code, you can paste the whole code in the `Markdown` document and add three backticks on the line before the code chunks starts and on the line after the code chunks ends. After the three backticks that go before your code chunk starts, you can specify in which language the code is written, in our case `R`.
-
-To find the backticks on your keyboard, look towards the top left corner on a Windows computer, perhaps just above `Tab` and before the number one key. On a Mac, look around the left `Shift` key. You can also just copy the backticks from below.
-
-```r
-# Set the working directory
-setwd("your_filepath")
-
-# Load packages
-library(ggplot2)
-library(dplyr)
-```
+## 1. Understand the basics of multivariate analyses
 
 <a name="section1a"></a>
 
+### Multivariate Stats Overview
+
+So what do we mean when we talk about multivariate data? Well its pretty much what it sounds like. Multivariate data are data that contain more than 2 response variables (although theres usually quite a few more than just 3). Multivariate statistics are where you analyse these multiple variables simultaneously. In biology these data usually come about, either from counts of species abundances in assemblages, where each species acts as a variable; or from physical properties of environments (such as temperature, pH or habitat structure).
+
+You will already be familiar with bivariate statistical tests (where ther are 2 response variables), such as t tests and one and two-way ANOVAs. So why look at multiple variables together when you can look at them separately? When you look at 2 variables in isolation, you are ignoring the many possible interactions between these variables, and the rest of the variables that you measured in the study. Multivariate statistics allow us to look at how multiple variables change together, and avoid the confounding effects that could occur from running the analyses separately. While looking at individual variables can sometimes be enough to answer your research question, if you are aiming to look at the overall effects of all variables, multivariate stats is the way to go. This can allow us to reveal patterns that would not be found by examining each variable separately. 
+
+<a name="section1b"></a>
+
+### NMDS
+
+
+
+
 <a name="section2"></a>
 
-## 2. The second section
+## 2. Make an NMDS Plot
 
-You can add more text and code, e.g.
+First, lets open R studio, make a new script and load the data and packages.
 
-```r
-# Create fake data
-x_dat <- rnorm(n = 100, mean = 5, sd = 2)  # x data
-y_dat <- rnorm(n = 100, mean = 10, sd = 0.2)  # y data
-xy <- data.frame(x_dat, y_dat)  # combine into data frame
+```
+# Set working directory
+
+# Load packages
+library(vegan)  # For performing the nmds
+library(tidyverse)  # For data tidying functions and plotting
+
+# Load data
+barents <- read.csv("data/barents_data.csv")
+```
+Now lets make the data easier to work with. Separate the species and environmental data and separate the environmental variables that we are interested in into ordinal groups.
+
+```
+# Separate environmental data and species data
+barents_spp <- barents %>% select(Re_hi:Tr_spp)
+barents_env_raw <- barents %>% select(ID.No:Temperature)
+
+# Create ordinal groups for depth and temperature variables
+barents_env <- barents_env_raw %>% 
+  mutate(Depth_cat=cut(Depth, breaks=c(-Inf, 250, 350, Inf), labels=c("shallow","mid","deep"))) %>%
+  mutate(Temp_cat=cut(Temperature, breaks=c(-Inf, 1, 2, 3, Inf), labels=c("vc","c","m","w")))
 ```
 
-Here you can add some more text if you wish.
+Now we have arranged the data, we can perform the nmds.
 
-```r
-xy_fil <- xy %>%  # Create object with the contents of `xy`
-	filter(x_dat < 7.5)  # Keep rows where `x_dat` is less than 7.5
+```
+# Perform nmds and fit environmental and species vectors
+barents.mds <- metaMDS(barents_spp, distance = "bray", autotransform = FALSE)
+barents.envfit <- envfit(barents.mds, barents_env, permutations = 999) # Fit environmental vectors
+barents.sppfit <- envfit(barents.mds, barents_spp, permutations = 999) # Fit species vectors
+```
+Have a look at the nmds output and check the stress. Sometimes he nmds cant represent all of the relationships between variables accurately. This is reflected by a high stress value. A general rule is if the stress value is below 0.2, the plot is generally ok.
+```
+barents.mds  # Stress value is less than 0.2, which is good. Shows how easy it was to condense multidimensional data into two dimensional space
 ```
 
-And finally, plot the data:
 
-```r
-ggplot(data = xy_fil, aes(x = x_dat, y = y_dat)) +  # Select the data to use
-	geom_point() +  # Draw scatter points
-	geom_smooth(method = "loess")  # Draw a loess curve
-```
+
+
+You can surround package names, functions, actions ("File/ New...") and small chunks of code with backticks, which defines them as inline code blocks and makes them stand out among the text, e.g. `ggplot2`.
+
+When you have a larger chunk of code, you can paste the whole code in the `Markdown` document and add three backticks on the line before the code chunks starts and on the line after the code chunks ends. After the three backticks that go before your code chunk starts, you can specify in which language the code is written, in our case `R`.
+
+
 
 At this point it would be a good idea to include an image of what the plot is meant to look like so students can check they've done it right. Replace `IMAGE_NAME.png` with your own image file:
 
