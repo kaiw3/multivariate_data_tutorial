@@ -17,7 +17,7 @@
 # RStudio files
 .Rproj.user/
 *.Rproj
-multivaraite_data_tutorial.rproj
+multivaraite-data-tutorial.rproj
 
 # produced vignettes
 vignettes/*.html
