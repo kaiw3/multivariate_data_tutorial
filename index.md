@@ -83,24 +83,88 @@ Have a look at the nmds output and check the stress. Sometimes he nmds cant repr
 barents.mds  # Stress value is less than 0.2, which is good. Shows how easy it was to condense multidimensional data into two dimensional space
 ```
 
+After you have performed the nmds, you need to save the outputs so we can graph it later. Here you will also group the data by the environmental variables we are interested in : depth and temperature.
+```
+# Save the results from the nmds and group the data by environmental variables
+site.scrs <- as.data.frame(scores(barents.mds, display = "sites"))  # save NMDS results into dataframe
+site.scrs <- cbind(site.scrs, Depth = barents_env$Depth_cat)  # make depth a grouping variable and save to dataframe
+site.scrs <- cbind(site.scrs, Temperature = barents_env$Temp_cat) # make temperature a grouping variable and save to dataframe
+head(site.scrs)  # View the dataframe
+```
 
+Take a look at the output you have saved to become familiar with the structure for future use of this dataframe.
+```
+head(spp.scrs)  # View dataframe
+```
 
+Now save the species specific data from the nmds analysis to a dataframe, so that we can plot this separately on the nmds plot later. Examine the dataframe so that you are comfortable with using it in later stages.
+```
+# Save species data from nmds to dataframe
+spp.scrs <- as.data.frame(scores(barents.sppfit, display = "vectors"))  # Save species values into dataframe
+spp.scrs <- cbind(spp.scrs, Species = rownames(spp.scrs))  # Add species names to dataframe
+spp.scrs <- cbind(spp.scrs, pval = barents.sppfit$vectors$pvals) # Add p values to dataframe so you can select species which are significant
+sig.spp.scrs <- subset(spp.scrs, pval<=0.05) # Show only significant species (using 0.05 as cutoff)
+head(spp.scrs)  # View dataframe
+```
 
-You can surround package names, functions, actions ("File/ New...") and small chunks of code with backticks, which defines them as inline code blocks and makes them stand out among the text, e.g. `ggplot2`.
+Do the same thing with the environmental variables. This will let you plot the vector information of either the species or environmental groups, or both, on top of the nmds plot.
+```
+# Save environmental variables
+env.scores.barents <- as.data.frame(scores(barents.envfit, display = "vectors"))  # Extract nmds scores of all environmental variables from envifit dataframe
+env.scores.barents <- cbind(env.scores.barents, env.variables = rownames(env.scores.barents))  # Name them 
+env.scores.barents <- cbind(env.scores.barents, pval = barents.envfit$vectors$pvals) # Add p values to dataframe
+sig.env.scrs <- subset(env.scores.barents, pval<=0.05) # Show only significant variables (using 0.05 as cutoff)
+head(env.scores.barents)  # View dataframe
+```
 
-When you have a larger chunk of code, you can paste the whole code in the `Markdown` document and add three backticks on the line before the code chunks starts and on the line after the code chunks ends. After the three backticks that go before your code chunk starts, you can specify in which language the code is written, in our case `R`.
+Now we can get to the fun part, plotting our nmds data! We'll use ggplot2 which you should already be familiar with from <a href="https://ourcodingclub.github.io/tutorials/datavis/" target="_blank">previous coding club tutorials</a>. Here we will use all of the same ggplot2 functions you have already learned about, so this section should be relatively straightforward.
+```
+# Basic nmds
+(nmds.plot.barents <- ggplot(site.scrs, aes(x=NMDS1, y=NMDS2))+ # Create the plot
+  geom_point(aes(x = NMDS1, y = NMDS2, colour = factor(site.scrs$Depth), shape = factor(site.scrs$Temperature)), size = 2)+ # Add site points to plot with the shape determined by temperature and colour determined by depth
+  coord_fixed()+
+  theme_classic()+ 
+  theme(panel.background = element_rect(fill = NA, colour = "black", size = 1, linetype = "solid"))+
+  labs(colour = "Depth", shape = "Temperature", title = "Does Fish Species Composition Change at\n Varying Water Depths and Temperatures")+ # Add legend labels
+  theme(legend.position = "right", legend.text = element_text(size = 12), legend.title = element_text(size = 12), axis.text = element_text(size = 10)) # Add legend
+)
+```
 
+<center> <img src="{{ site.baseurl }}/photos/nmds_1.png" alt="nmds" style="width: 800px;"/> </center>
 
+And here we have an nmds plot! We can see that there are some different groupings going on here, with some samples being found in warmer temperatures or greater depths, for example. But we don't know whic species these groups relate to...it's luck we saved the species data from the nmds then!\n
 
-At this point it would be a good idea to include an image of what the plot is meant to look like so students can check they've done it right. Replace `IMAGE_NAME.png` with your own image file:
+Lets add an overlay with species vectors.
+```
+# Add species vector arrows
+(nmds.plot.barents.2 <- nmds.plot.barents +
+  geom_segment(data = sig.spp.scrs, aes(x = 0, xend=NMDS1, y=0, yend=NMDS2), arrow = arrow(length = unit(0.25, "cm")), colour = "grey10", lwd=0.3) + # Add vector arrows for significant species
+  ggrepel::geom_text_repel(data = sig.spp.scrs, aes(x=NMDS1, y=NMDS2, label = Species), cex = 3, direction = "both", segment.size = 0.25) # Add labels for species (with ggrepel::geom_text_repel so that labels do not overlap)
+)
+```
 
-<center> <img src="{{ site.baseurl }}/IMAGE_NAME.png" alt="Img" style="width: 800px;"/> </center>
+<center> <img src="{{ site.baseurl }}/photos/nmds_2.png" alt="nmds" style="width: 800px;"/> </center>
 
-<a name="section1"></a>
+Great! Now we can see certain species group more in warmer water, or in colder water. We can also see how strong these relationships are based on the length of the arrows. While we can see that some environmental groupings exist, we may want to get a more clear idea of the directions these are acting in by overlaying the environmental nmds data that we also saved earlier. Lets include all of the measured variables just so that we can see what datasets with lots of variables would look like.
+```
+# Add environmental variable vector arrows
+(nmds.plot.barents.3 <- nmds.plot.barents +
+  geom_segment(data = sig.env.scrs, aes(x = 0, xend=NMDS1, y=0, yend=NMDS2), arrow = arrow(length = unit(0.25, "cm")), colour = "grey10", lwd=0.3) + # Add vector arrows of significant environmental variables
+  ggrepel::geom_text_repel(data = sig.env.scrs, aes(x=NMDS1, y=NMDS2, label = env.variables), cex = 4, direction = "both", segment.size = 0.25) # Add labels
+)
+```
 
-## 3. The third section
+<center> <img src="{{ site.baseurl }}/photos/nmds_3.png" alt="nmds" style="width: 800px;"/> </center>
+
+<a name="section3"></a>
+
+## 3. Perform a SIMPER analysis
 
 More text, code and images.
+
+<a name="section4"></a>
+
+## 4. Challenge
 
 This is the end of the tutorial. Summarise what the student has learned, possibly even with a list of learning outcomes. In this tutorial we learned:
 
@@ -108,42 +172,4 @@ This is the end of the tutorial. Summarise what the student has learned, possibl
 ##### - how to create a scatterplot in ggplot2
 ##### - some of the different plot methods in ggplot2
 
-We can also provide some useful links, include a contact form and a way to send feedback.
 
-For more on `ggplot2`, read the official <a href="https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf" target="_blank">ggplot2 cheatsheet</a>.
-
-Everything below this is footer material - text and links that appears at the end of all of your tutorials.
-
-<hr>
-<hr>
-
-#### Check out our <a href="https://ourcodingclub.github.io/links/" target="_blank">Useful links</a> page where you can find loads of guides and cheatsheets.
-
-#### If you have any questions about completing this tutorial, please contact us on ourcodingclub@gmail.com
-
-#### <a href="INSERT_SURVEY_LINK" target="_blank">We would love to hear your feedback on the tutorial, whether you did it in the classroom or online!</a>
-
-<ul class="social-icons">
-	<li>
-		<h3>
-			<a href="https://twitter.com/our_codingclub" target="_blank">&nbsp;Follow our coding adventures on Twitter! <i class="fa fa-twitter"></i></a>
-		</h3>
-	</li>
-</ul>
-
-### &nbsp;&nbsp;Subscribe to our mailing list:
-<div class="container">
-	<div class="block">
-        <!-- subscribe form start -->
-		<div class="form-group">
-			<form action="https://getsimpleform.com/messages?form_api_token=de1ba2f2f947822946fb6e835437ec78" method="post">
-			<div class="form-group">
-				<input type='text' class="form-control" name='Email' placeholder="Email" required/>
-			</div>
-			<div>
-                        	<button class="btn btn-default" type='submit'>Subscribe</button>
-                    	</div>
-                	</form>
-		</div>
-	</div>
-</div>
