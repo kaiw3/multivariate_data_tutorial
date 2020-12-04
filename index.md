@@ -100,7 +100,7 @@ barents.mds  # Stress value is less than 0.2, which is good. Shows how easy it w
 ```
 
 <center> <img src="{{ site.baseurl }}/photos/barents_nmds.png" alt="nmds" style="width: 800px;"/> </center>
-
+Figure 1 - Output from NMDS with low stress.
 </br>
 
 After you have performed the nmds, you need to save the outputs so we can graph it later. Here you will also group the data by the environmental variables we are interested in : depth and temperature.
@@ -119,6 +119,7 @@ head(site.scrs)  # View dataframe
 ```
 
 <center> <img src="{{ site.baseurl }}/photos/grouped_nmds.png" alt="nmds" style="width: 600px;"/> </center>
+Figure 2 - Output from NDMS saved in a dataframe and grouped by environmental variables.
 
 </br>
 
@@ -160,6 +161,9 @@ Now we can get to the fun part, plotting our nmds data! We'll use ggplot2 which 
 ```
 
 <center> <img src="{{ site.baseurl }}/photos/nmds_1.png" alt="nmds" style="width: 1400px;"/> </center>
+Figure 3 - Basic NMDS plot.
+
+</br>
 
 And here we have an nmds plot! We can see that there are some different groupings going on here, with some samples being found in warmer temperatures or greater depths, for example. But we don't know whic species these groups relate to...it's luck we saved the species data from the nmds then!<br/>
 
@@ -173,6 +177,9 @@ Lets add an overlay with species vectors.
 ```
 
 <center> <img src="{{ site.baseurl }}/photos/nmds_2.png" alt="nmds" style="width: 1400px;"/> </center>
+Figure 4 - NMDS plot with species vector overlay.
+
+</br>
 
 Great! Now we can see certain species group more in warmer water, or in colder water. We can also see how strong these relationships are based on the length of the arrows. While we can see that some environmental groupings exist, we may want to get a more clear idea of the directions these are acting in by overlaying the environmental nmds data that we also saved earlier. Lets include all of the measured variables just so that we can see what datasets with lots of variables would look like.
 ```
@@ -184,6 +191,7 @@ Great! Now we can see certain species group more in warmer water, or in colder w
 ```
 
 <center> <img src="{{ site.baseurl }}/photos/nmds_3.png" alt="nmds" style="width: 1400px;"/> </center>
+Figure 5 - NMDS plot with environmental vector overlay.
 
 <a name="section3"></a>
 
@@ -205,6 +213,7 @@ bar_depth  # ANOSIM significance is less than 0.05 so it is significant. R stati
 ```
 
 <center> <img src="{{ site.baseurl }}/photos/anosim_depth.png" alt="anosim" style="width: 800px;"/> </center>
+Figure 6 - ANOSIM looking at depth. Significant and low r statistic.
 
 </br>
 
@@ -216,6 +225,7 @@ bar_temp  # Significance means this looks good too, and relatively low R statist
 ```
 
 <center> <img src="{{ site.baseurl }}/photos/anosim_temp.png" alt="anosim" style="width: 800px;"/> </center>
+Figure 7 - ANOSIM looking at temperature. Significant and low r statistic.
 
 <a name="section4"></a>
 
@@ -246,6 +256,9 @@ Congradulations! You are now able to perform two different multivariate statisti
 But for now, relax and enjoy the feeling of having explored the factors affecting fish communities in the Barents Sea.
 
 <center> <img src="{{ site.baseurl }}/photos/barents_sea.png" alt="anosim" style="width: 800px;"/> </center>
+Figure 8 - The Barents Sea
+
+</br>
 
 Now you should know:
 
@@ -255,3 +268,7 @@ Now you should know:
 
 And keep practicing these skills by looking for other multivariate datasets to apply these tests to. The more you practice, the more confident you will feel in the world of multivariate stats.
 
+<hr>
+
+If you have any questions about this tutorial, send me an email at s1727718@ed.ac.uk. </br>
+See repository for references.
