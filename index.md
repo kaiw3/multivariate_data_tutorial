@@ -1,10 +1,11 @@
 <center><img src="{{ site.baseurl }}/photos/tut_banner.png" alt="Img"></center>
 
 Created by Kai Westwell
+<hr>
 
 ### Tutorial Aims
 
-#### <a href="#section1"> 1. Understand the basics of multivariate analyses <br/> 
+#### <a href="#section1"> 1. Understand the basics of multivariate analyses 
 <a href="#section1a"> - Multivariate Stats Overview</a> <br/>
 <a href="#section1b"> - NMDS</a> <br/>
 <a href="#section1c"> - ANOSIM</a> <br/>
@@ -24,7 +25,8 @@ This tutorial will cover some of the basic methods in analysing multivariate dat
 
 Ecological data can be complex. Often, large numbers of variables need to be studied in order to obtain an accurate picture of the system in question. This complexity can make the data hard to interpret, and even harder to analyse statistically. This tutorial will take you through the basics of understanding what multivariate data look like, and will introduce you to some of the ways we can use statistics to interpret these data. In order to transition into dealing with the wide array of ecological data you are likely to be presented with when looking at real systems, its important to be able to deal with complex data. And hopefully, as you take these skill forward, you will find more and more ways that to can apply multivariate stats into solving a problem!
 
-You can get all of the resources for this tutorial from <a href="https://github.com/kaiw3/multivariate_data_tutorial" target="_blank">this GitHub repository</a>. Clone and download the repo as a zip file, then unzip it.
+<div style=”width:90px; height;60px; float:left; background-color:#CCC; text-align:center;”>You can get all of the resources for this tutorial from <a href="https://github.com/kaiw3/multivariate_data_tutorial" target="_blank">this GitHub repository</a>. Clone and download the repo as a zip file, then unzip it.</div>
+
 
 <a name="section1"></a>
 
@@ -43,6 +45,8 @@ You will already be familiar with bivariate statistical tests (where ther are 2 
 ### NMDS
 NMDS plots are used to condense multivariate data into a 2d representation of those data. The distance between points on the plots shows how similar or dissimilar they are from each other, relative to the variables that you are looking at. This is great for species count data, as you can condense a lot of data down into a single, easy to read plot. NMDS stands for non-metric multidimensional scaling...sounds kind of confusing, so lets break this down. Non-metric refers to the fact that the data is ranked, and doesn't have a linear pattern to it. As it uses rank data, the assumptions of normality do not need to be met when running this analysis, which can be very useful when analysing species count data. Multidimensional refers to the data having multiple variables, and being condensed into a 2-dimensional (or 3d) plane. And finally scaling refers to the ratio between the real data and the 2-d representation of it generated through the nmds analysis./n
 Now that we understand what nmds plots are, we can look at some of the practical considerations. One of the main decisions you have to make when running these analyses is what distance matrix to use. This will decide how R calculates the distance between each point. A good choice for species data is often Bray-Curtis. This will take into account presence/absence data as well as the abundance, so it includes more information than some of the alternatives. Once we have run the analysis, we need to look at the stress value. This tells you how well the relationship between points has been represented on this 2-d plane. It is generally accepted that a stress value below 0.2 suggests the model is good, but we'll see how this works in practice soon.
+
+<a name="section1c"></a>
 
 ### ANOSIM
 
