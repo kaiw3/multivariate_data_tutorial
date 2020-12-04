@@ -5,9 +5,9 @@ Created by Kai Westwell
 ### Tutorial Aims
 
 #### <a href="#section1"> 1. Understand the basics of multivariate analyses\n 
-<a href="#section1a"> - Multivariate Stats Overview</a>
-<a href="#section1b"> - NMDS</a>
-<a href="#section1c"> - ANOSIM</a>
+- <a href="#section1a"> - Multivariate Stats Overview</a>
+- <a href="#section1b"> - NMDS</a>
+- <a href="#section1c"> - ANOSIM</a>
 
 #### <a href="#section2"> 2. Make an NMDS plot</a>
 
