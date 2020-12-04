@@ -13,6 +13,10 @@ Created by Kai Westwell
 
 #### <a href="#section3"> 3. Perform a SIMPER analysis</a>
 
+#### <a href="#section4"> 4. Challenge</a>
+
+#### <a href="#summary"> Summary</a>
+
 This tutorial will cover some of the basic methods in analysing multivariate data. You will learn what multivariate data is, some of the ways you can analyse these kinds of data, and then you can practice it for yourself!
 ---------------------------
 
@@ -37,9 +41,12 @@ You will already be familiar with bivariate statistical tests (where ther are 2 
 <a name="section1b"></a>
 
 ### NMDS
+NMDS plots are used to condense multivariate data into a 2d representation of those data. The distance between points on the plots shows how similar or dissimilar they are from each other, relative to the variables that you are looking at. This is great for species count data, as you can condense a lot of data down into a single, easy to read plot. NMDS stands for non-metric multidimensional scaling...sounds kind of confusing, so lets break this down. Non-metric refers to the fact that the data is ranked, and doesn't have a linear pattern to it. As it uses rank data, the assumptions of normality do not need to be met when running this analysis, which can be very useful when analysing species count data. Multidimensional refers to the data having multiple variables, and being condensed into a 2-dimensional (or 3d) plane. And finally scaling refers to the ratio between the real data and the 2-d representation of it generated through the nmds analysis./n
+Now that we understand what nmds plots are, we can look at some of the practical considerations. One of the main decisions you have to make when running these analyses is what distance matrix to use. This will decide how R calculates the distance between each point. A good choice for species data is often Bray-Curtis. This will take into account presence/absence data as well as the abundance, so it includes more information than some of the alternatives. Once we have run the analysis, we need to look at the stress value. This tells you how well the relationship between points has been represented on this 2-d plane. It is generally accepted that a stress value below 0.2 suggests the model is good, but we'll see how this works in practice soon.
 
+### ANOSIM
 
-
+ANOSIM, or analysis of similarities, is a multivariate analysis technique similar to ANOVA, where data within groups are compared to data between groups. Unlike ANOVA, however, raw data are not compared between and within groups. Instead, the data are ranked on a dissimilarity matrix as opposed to using actual Euclidean distance. This means ANOSIM analyses are non-parametric, so they dont carry (many of) the same assumptions as a standard ANOVA (no more worrying about normality!!). But the main advatage to using ANOSIM analyses is that they can compare data across multiple groups, perfect for species count data.
 
 <a name="section2"></a>
 
@@ -83,6 +90,8 @@ Have a look at the nmds output and check the stress. Sometimes he nmds cant repr
 barents.mds  # Stress value is less than 0.2, which is good. Shows how easy it was to condense multidimensional data into two dimensional space
 ```
 
+<center> <img src="{{ site.baseurl }}barents_nmds.png" alt="nmds" style="width: 800px;"/> </center>
+
 After you have performed the nmds, you need to save the outputs so we can graph it later. Here you will also group the data by the environmental variables we are interested in : depth and temperature.
 ```
 # Save the results from the nmds and group the data by environmental variables
@@ -92,10 +101,13 @@ site.scrs <- cbind(site.scrs, Temperature = barents_env$Temp_cat) # make tempera
 head(site.scrs)  # View the dataframe
 ```
 
+
 Take a look at the output you have saved to become familiar with the structure for future use of this dataframe.
 ```
-head(spp.scrs)  # View dataframe
+head(site.scrs)  # View dataframe
 ```
+
+<center> <img src="{{ site.baseurl }}grouped_nmds.png" alt="nmds" style="width: 800px;"/> </center>
 
 Now save the species specific data from the nmds analysis to a dataframe, so that we can plot this separately on the nmds plot later. Examine the dataframe so that you are comfortable with using it in later stages.
 ```
@@ -160,16 +172,65 @@ Great! Now we can see certain species group more in warmer water, or in colder w
 
 ## 3. Perform a SIMPER analysis
 
-More text, code and images.
+First, we'll turn the species data into a matrix so that the ANOSIM can process the data.
+```
+mat_bar_spp <- as.matrix(barents_spp)
+```
+
+Now we can run the ANOSIM, first looking at the depth grouping. This shows that there is a statistically significant difference between species based on depth, as the significance value is below 0.05. However, this difference isnt particularly strong with an r statistic of around 0.2.
+```
+# ANOSIM with depth grouping
+bar_depth <- anosim(mat_bar_spp, barents_env_raw$Depth, distance = "bray", permutations = 9999)
+bar_depth  # ANOSIM significance is less than 0.05 so it is significant. R statistic is relatively low, suggesting the groups are similar to each other.
+
+```
+
+<center> <img src="{{ site.baseurl }}/photos/anosim_depth.png" alt="anosim" style="width: 800px;"/> </center>
+
+And now lets run the ANOSIM of the species grouped by temperature. This is also significant, and has a similar r statistic to depth. However this is strong enough to infer that there is a difference between groups, even though it isn't the strongest difference. This is backed up by the low stress level in the NMDS, suggesting that the model is accurate.
+```
+# ANOSIM with temperature grouping
+bar_temp <- anosim(mat_bar_spp, barents_env_raw$Temperature, distance = "bray", permutations = 9999)
+bar_temp  # Significance means this looks good too, and relatively low R statistic suggests similarity between groups.
+```
+
+<center> <img src="{{ site.baseurl }}/photos/anosim_temp.png" alt="anosim" style="width: 800px;"/> </center>
 
 <a name="section4"></a>
 
 ## 4. Challenge
 
-This is the end of the tutorial. Summarise what the student has learned, possibly even with a list of learning outcomes. In this tutorial we learned:
+So...now you know how to run NMDS and ANOSIM analyses on multivariate data, as well as the situation in which these tests would be useful. So now its your turn to try it out! Use the code below that groups the data by location (latitude and longitude), and test to see if species are grouped by one or both of these variables. Remember to also check that these groupings are statistically significant, and how strong they are.
 
-##### - how to generate fake bivariate data
-##### - how to create a scatterplot in ggplot2
-##### - some of the different plot methods in ggplot2
+```
+barents_env_chal <- barents_env_raw %>% 
+  mutate(lat_cat=cut(Latitude, breaks=c(-Inf, 72, 74, Inf), labels=c("south","centre","north"))) %>% 
+  mutate(long_cat=cut(Longitude, breaks=c(-Inf, 23, 30, Inf), labels=c("west","centre","east")))
+```
 
+Steps:
+1. Perform nmds and fit the environmental and species data.
+2. Save the results from the nmds and then group the data by the variables you are interested in.
+3. If you want to look at environmental factors, species or both on the nmds plot, then save these. If you dont want to add either of these to your plot then move onto the next step.
+4. Create your nmds plot and make it look nice.
+5. Test whether theres a statistically significant difference between barents sea fish communities and your environmental variables.
+6. Enjoy being able to perform multivariate analyses!
+
+<a name="summary"></a>
+
+## Summary
+
+Congradulations! You are now able to perform two different multivariate statistical tests. But there are so many more to learn! A further test you could perform on this data is an indicator species analysis, to see which species are found statistically more abundantly in one group versus the other. Or, if you didn't want to group the environmental variables, instead keeping them as continuous scales, you could try a mantel test. You could also look into PCA, MANOVA, rarefaction and a range of other tests, so keep an eye out for future tutorials on these subjects.\n
+
+But for now, relax and enjoy the feeling of having explored the factors affecting fish communities in the Barents Sea.
+
+<center> <img src="{{ site.baseurl }}/photos/barents_sea.png" alt="barents_sea" style="width: 800px;"/> </center>
+
+Now you should know:
+
+##### - What multivariate statistics and data are
+##### - The situations in which you could use NMDS and ANOSIM
+##### - How to run NMDS and ANOSIM analyses
+
+And keep practicing these skills by looking for other multivariate datasets to apply these tests to. The more you practice, the more confident you will feel in the world of multivariate stats.
 
