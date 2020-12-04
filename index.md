@@ -25,7 +25,7 @@ This tutorial will cover some of the basic methods in analysing multivariate dat
 
 Ecological data can be complex. Often, large numbers of variables need to be studied in order to obtain an accurate picture of the system in question. This complexity can make the data hard to interpret, and even harder to analyse statistically. This tutorial will take you through the basics of understanding what multivariate data look like, and will introduce you to some of the ways we can use statistics to interpret these data. In order to transition into dealing with the wide array of ecological data you are likely to be presented with when looking at real systems, its important to be able to deal with complex data. And hopefully, as you take these skill forward, you will find more and more ways that to can apply multivariate stats into solving a problem!
 
-<div style=”width:90px; height;60px; float:left; background-color:#CCC; text-align:center;”>You can get all of the resources for this tutorial from <a href="https://github.com/kaiw3/multivariate_data_tutorial" target="_blank">this GitHub repository</a>. Clone and download the repo as a zip file, then unzip it.</div>
+<div style=”width:90px; height;60px; float:left; background-color:#a4fd00; text-align:center;”>You can get all of the resources for this tutorial from <a href="https://github.com/kaiw3/multivariate_data_tutorial" target="_blank">this GitHub repository</a>. Clone and download the repo as a zip file, then unzip it.</div>
 
 
 <a name="section1"></a>
