@@ -65,6 +65,9 @@ library(tidyverse)  # For data tidying functions and plotting
 # Load data
 barents <- read.csv("data/barents_data.csv")
 ```
+
+</br>
+
 Now lets make the data easier to work with. Separate the species and environmental data and separate the environmental variables that we are interested in into ordinal groups.
 
 ```
@@ -78,6 +81,8 @@ barents_env <- barents_env_raw %>%
   mutate(Temp_cat=cut(Temperature, breaks=c(-Inf, 1, 2, 3, Inf), labels=c("vc","c","m","w")))
 ```
 
+</br>
+
 Now we have arranged the data, we can perform the nmds.
 
 ```
@@ -86,12 +91,17 @@ barents.mds <- metaMDS(barents_spp, distance = "bray", autotransform = FALSE)
 barents.envfit <- envfit(barents.mds, barents_env, permutations = 999) # Fit environmental vectors
 barents.sppfit <- envfit(barents.mds, barents_spp, permutations = 999) # Fit species vectors
 ```
+
+</br>
+
 Have a look at the nmds output and check the stress. Sometimes he nmds cant represent all of the relationships between variables accurately. This is reflected by a high stress value. A general rule is if the stress value is below 0.2, the plot is generally ok.
 ```
 barents.mds  # Stress value is less than 0.2, which is good. Shows how easy it was to condense multidimensional data into two dimensional space
 ```
 
 <center> <img src="{{ site.baseurl }}/photos/barents_nmds.png" alt="nmds" style="width: 800px;"/> </center>
+
+</br>
 
 After you have performed the nmds, you need to save the outputs so we can graph it later. Here you will also group the data by the environmental variables we are interested in : depth and temperature.
 ```
@@ -101,7 +111,7 @@ site.scrs <- cbind(site.scrs, Depth = barents_env$Depth_cat)  # make depth a gro
 site.scrs <- cbind(site.scrs, Temperature = barents_env$Temp_cat) # make temperature a grouping variable and save to dataframe
 head(site.scrs)  # View the dataframe
 ```
-
+</br>
 
 Take a look at the output you have saved to become familiar with the structure for future use of this dataframe.
 ```
@@ -109,6 +119,8 @@ head(site.scrs)  # View dataframe
 ```
 
 <center> <img src="{{ site.baseurl }}/photos/grouped_nmds.png" alt="nmds" style="width: 600px;"/> </center>
+
+</br>
 
 Now save the species specific data from the nmds analysis to a dataframe, so that we can plot this separately on the nmds plot later. Examine the dataframe so that you are comfortable with using it in later stages.
 ```
@@ -120,6 +132,8 @@ sig.spp.scrs <- subset(spp.scrs, pval<=0.05) # Show only significant species (us
 head(spp.scrs)  # View dataframe
 ```
 
+</br>
+
 Do the same thing with the environmental variables. This will let you plot the vector information of either the species or environmental groups, or both, on top of the nmds plot.
 ```
 # Save environmental variables
@@ -129,6 +143,8 @@ env.scores.barents <- cbind(env.scores.barents, pval = barents.envfit$vectors$pv
 sig.env.scrs <- subset(env.scores.barents, pval<=0.05) # Show only significant variables (using 0.05 as cutoff)
 head(env.scores.barents)  # View dataframe
 ```
+
+</br>
 
 Now we can get to the fun part, plotting our nmds data! We'll use ggplot2 which you should already be familiar with from <a href="https://ourcodingclub.github.io/tutorials/datavis/" target="_blank">previous coding club tutorials</a>. Here we will use all of the same ggplot2 functions you have already learned about, so this section should be relatively straightforward.
 ```
@@ -143,7 +159,7 @@ Now we can get to the fun part, plotting our nmds data! We'll use ggplot2 which 
 )
 ```
 
-<center> <img src="{{ site.baseurl }}/photos/nmds_1.png" alt="nmds" style="width: 1200px;"/> </center>
+<center> <img src="{{ site.baseurl }}/photos/nmds_1.png" alt="nmds" style="width: 1400px;"/> </center>
 
 And here we have an nmds plot! We can see that there are some different groupings going on here, with some samples being found in warmer temperatures or greater depths, for example. But we don't know whic species these groups relate to...it's luck we saved the species data from the nmds then!<br/>
 
@@ -156,7 +172,7 @@ Lets add an overlay with species vectors.
 )
 ```
 
-<center> <img src="{{ site.baseurl }}/photos/nmds_2.png" alt="nmds" style="width: 800px;"/> </center>
+<center> <img src="{{ site.baseurl }}/photos/nmds_2.png" alt="nmds" style="width: 1400px;"/> </center>
 
 Great! Now we can see certain species group more in warmer water, or in colder water. We can also see how strong these relationships are based on the length of the arrows. While we can see that some environmental groupings exist, we may want to get a more clear idea of the directions these are acting in by overlaying the environmental nmds data that we also saved earlier. Lets include all of the measured variables just so that we can see what datasets with lots of variables would look like.
 ```
@@ -167,7 +183,7 @@ Great! Now we can see certain species group more in warmer water, or in colder w
 )
 ```
 
-<center> <img src="{{ site.baseurl }}/photos/nmds_3.png" alt="nmds" style="width: 800px;"/> </center>
+<center> <img src="{{ site.baseurl }}/photos/nmds_3.png" alt="nmds" style="width: 1400px;"/> </center>
 
 <a name="section3"></a>
 
@@ -178,6 +194,8 @@ First, we'll turn the species data into a matrix so that the ANOSIM can process 
 mat_bar_spp <- as.matrix(barents_spp)
 ```
 
+</br>
+
 Now we can run the ANOSIM, first looking at the depth grouping. This shows that there is a statistically significant difference between species based on depth, as the significance value is below 0.05. However, this difference isnt particularly strong with an r statistic of around 0.2.
 ```
 # ANOSIM with depth grouping
@@ -187,6 +205,8 @@ bar_depth  # ANOSIM significance is less than 0.05 so it is significant. R stati
 ```
 
 <center> <img src="{{ site.baseurl }}/photos/anosim_depth.png" alt="anosim" style="width: 800px;"/> </center>
+
+</br>
 
 And now lets run the ANOSIM of the species grouped by temperature. This is also significant, and has a similar r statistic to depth. However this is strong enough to infer that there is a difference between groups, even though it isn't the strongest difference. This is backed up by the low stress level in the NMDS, suggesting that the model is accurate.
 ```
@@ -225,7 +245,7 @@ Congradulations! You are now able to perform two different multivariate statisti
 
 But for now, relax and enjoy the feeling of having explored the factors affecting fish communities in the Barents Sea.
 
-<center> <img src="{{ site.baseurl }}/photos/barents_sea.png" alt="barents_sea" style="width: 800px;"/> </center>
+<center> <img src="{{ site.baseurl }}/photos/barents_sea.png" alt="anosim" style="width: 800px;"/> </center>
 
 Now you should know:
 
