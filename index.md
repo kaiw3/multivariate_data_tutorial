@@ -108,7 +108,7 @@ Take a look at the output you have saved to become familiar with the structure f
 head(site.scrs)  # View dataframe
 ```
 
-<center> <img src="{{ site.baseurl }}/photos/grouped_nmds.png" alt="nmds" style="width: 800px;"/> </center>
+<center> <img src="{{ site.baseurl }}/photos/grouped_nmds.png" alt="nmds" style="width: 600px;"/> </center>
 
 Now save the species specific data from the nmds analysis to a dataframe, so that we can plot this separately on the nmds plot later. Examine the dataframe so that you are comfortable with using it in later stages.
 ```
@@ -143,7 +143,7 @@ Now we can get to the fun part, plotting our nmds data! We'll use ggplot2 which 
 )
 ```
 
-<center> <img src="{{ site.baseurl }}/photos/nmds_1.png" alt="nmds" style="width: 800px;"/> </center>
+<center> <img src="{{ site.baseurl }}/photos/nmds_1.png" alt="nmds" style="width: 1200px;"/> </center>
 
 And here we have an nmds plot! We can see that there are some different groupings going on here, with some samples being found in warmer temperatures or greater depths, for example. But we don't know whic species these groups relate to...it's luck we saved the species data from the nmds then!<br/>
 
