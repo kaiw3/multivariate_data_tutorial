@@ -91,7 +91,7 @@ Have a look at the nmds output and check the stress. Sometimes he nmds cant repr
 barents.mds  # Stress value is less than 0.2, which is good. Shows how easy it was to condense multidimensional data into two dimensional space
 ```
 
-<center> <img src="{{ site.baseurl }}photos/barents_nmds.png" alt="nmds" style="width: 800px;"/> </center>
+<center> <img src="{{ site.baseurl }}/photos/barents_nmds.png" alt="nmds" style="width: 800px;"/> </center>
 
 After you have performed the nmds, you need to save the outputs so we can graph it later. Here you will also group the data by the environmental variables we are interested in : depth and temperature.
 ```
@@ -108,7 +108,7 @@ Take a look at the output you have saved to become familiar with the structure f
 head(site.scrs)  # View dataframe
 ```
 
-<center> <img src="{{ site.baseurl }}photos/grouped_nmds.png" alt="nmds" style="width: 800px;"/> </center>
+<center> <img src="{{ site.baseurl }}/photos/grouped_nmds.png" alt="nmds" style="width: 800px;"/> </center>
 
 Now save the species specific data from the nmds analysis to a dataframe, so that we can plot this separately on the nmds plot later. Examine the dataframe so that you are comfortable with using it in later stages.
 ```
