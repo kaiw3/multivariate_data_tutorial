@@ -1,3 +1,4 @@
+theme: minimal
 <center><img src="{{ site.baseurl }}/photos/tut_banner.png" alt="Img"></center>
 
 Created by Kai Westwell
