@@ -5,7 +5,7 @@ This repo contains necessary information and files in order to complete the intr
 Kai Westwell: s1727718@ed.ac.uk
 
 # Tutorial Link 
-- [Access the tutorial here](https://kaiw3.github.io/multivariate_data_tutorial)
+- [Access the tutorial here](https://eddatascienceees.github.io/tutorial-kaiw3/)
 
 # Contents
 - [Script](script/)
