@@ -92,7 +92,7 @@ Have a look at the nmds output and check the stress. Sometimes he nmds cant repr
 barents.mds  # Stress value is less than 0.2, which is good. Shows how easy it was to condense multidimensional data into two dimensional space
 ```
 
-<center> <img src="{{ site.baseurl }}barents_nmds.png" alt="nmds" style="width: 800px;"/> </center>
+<center> <img src="{{ site.baseurl }}barents_nmds" alt="nmds" style="width: 800px;"/> </center>
 
 After you have performed the nmds, you need to save the outputs so we can graph it later. Here you will also group the data by the environmental variables we are interested in : depth and temperature.
 ```
