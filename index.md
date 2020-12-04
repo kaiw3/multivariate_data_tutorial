@@ -4,10 +4,10 @@ Created by Kai Westwell
 
 ### Tutorial Aims
 
-#### <a href="#section1"> 1. Understand the basics of multivariate analyses\n 
-- <a href="#section1a"> - Multivariate Stats Overview</a>
-- <a href="#section1b"> - NMDS</a>
-- <a href="#section1c"> - ANOSIM</a>
+#### <a href="#section1"> 1. Understand the basics of multivariate analyses <br/> 
+<a href="#section1a"> - Multivariate Stats Overview</a> <br/>
+<a href="#section1b"> - NMDS</a> <br/>
+<a href="#section1c"> - ANOSIM</a> <br/>
 
 #### <a href="#section2"> 2. Make an NMDS plot</a>
 
@@ -144,7 +144,7 @@ Now we can get to the fun part, plotting our nmds data! We'll use ggplot2 which 
 
 <center> <img src="{{ site.baseurl }}/photos/nmds_1.png" alt="nmds" style="width: 800px;"/> </center>
 
-And here we have an nmds plot! We can see that there are some different groupings going on here, with some samples being found in warmer temperatures or greater depths, for example. But we don't know whic species these groups relate to...it's luck we saved the species data from the nmds then!\n
+And here we have an nmds plot! We can see that there are some different groupings going on here, with some samples being found in warmer temperatures or greater depths, for example. But we don't know whic species these groups relate to...it's luck we saved the species data from the nmds then!<br/>
 
 Lets add an overlay with species vectors.
 ```
@@ -220,7 +220,7 @@ Steps:
 
 ## Summary
 
-Congradulations! You are now able to perform two different multivariate statistical tests. But there are so many more to learn! A further test you could perform on this data is an indicator species analysis, to see which species are found statistically more abundantly in one group versus the other. Or, if you didn't want to group the environmental variables, instead keeping them as continuous scales, you could try a mantel test. You could also look into PCA, MANOVA, rarefaction and a range of other tests, so keep an eye out for future tutorials on these subjects.\n
+Congradulations! You are now able to perform two different multivariate statistical tests. But there are so many more to learn! A further test you could perform on this data is an indicator species analysis, to see which species are found statistically more abundantly in one group versus the other. Or, if you didn't want to group the environmental variables, instead keeping them as continuous scales, you could try a mantel test. You could also look into PCA, MANOVA, rarefaction and a range of other tests, so keep an eye out for future tutorials on these subjects. <br/>
 
 But for now, relax and enjoy the feeling of having explored the factors affecting fish communities in the Barents Sea.
 
