@@ -1,4 +1,4 @@
-﻿ID.No,Latitude,Longitude,Depth,Temperature,Re_hi,An_de,An_mi,Hi_pl,An_lu,Me_ae,Ra_ra,Mi_po,Ar_at,No_rk,Lu_la,Ma_vi,Bo_sa,Cy_lu,Cl_ha,Se_me,Le_de,Ga_mo,Le_ma,Se_ma,Tr_es,Ly_pa,Ly_eu,Ly_re,Ly_se,Ly_es,Ly_va,Be_gl,Ca_re,Tr_spp
+﻿ID_No,Latitude,Longitude,Depth,Temperature,Re_hi,An_de,An_mi,Hi_pl,An_lu,Me_ae,Ra_ra,Mi_po,Ar_at,No_rk,Lu_la,Ma_vi,Bo_sa,Cy_lu,Cl_ha,Se_me,Le_de,Ga_mo,Le_ma,Se_ma,Tr_es,Ly_pa,Ly_eu,Ly_re,Ly_se,Ly_es,Ly_va,Be_gl,Ca_re,Tr_spp
 356,71.1,22.43,349,3.95,0,0,0,31,0,108,0,325,0,0,0,2,0,1,4,7,0,44,0,10,309,0,0,0,0,0,4,0,0,0
 357,71.32,23.68,382,3.75,0,0,0,4,0,110,0,349,0,1,0,0,0,0,0,93,0,138,0,2,1041,0,0,0,0,0,2,0,0,0
 358,71.6,24.9,294,3.45,0,0,0,27,0,788,0,6,0,0,0,0,0,0,0,37,0,675,0,2,218,0,0,0,0,0,10,0,0,0
